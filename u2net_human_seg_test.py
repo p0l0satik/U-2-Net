@@ -1,4 +1,5 @@
 import os
+import sys
 from skimage import io, transform
 import torch
 import torchvision
@@ -50,15 +51,15 @@ def save_output(image_name,pred,d_dir):
 
     imo.save(d_dir+imidx+'.png')
 
-def main():
+def main(data, result, path_to_weights):
 
     # --------- 1. get image path and name ---------
     model_name='u2net'
 
 
-    image_dir = os.path.join(os.getcwd(), 'test_data', 'test_human_images')
-    prediction_dir = os.path.join(os.getcwd(), 'test_data', 'test_human_images' + '_results' + os.sep)
-    model_dir = os.path.join(os.getcwd(), 'saved_models', model_name+'_human_seg', model_name + '_human_seg.pth')
+    image_dir = data
+    prediction_dir = result
+    model_dir = os.path.join(path_to_weights, 'saved_models', model_name+'_human_seg', model_name + '_human_seg.pth')
 
     img_name_list = glob.glob(image_dir + os.sep + '*')
     print(img_name_list)
@@ -114,4 +115,7 @@ def main():
         del d1,d2,d3,d4,d5,d6,d7
 
 if __name__ == "__main__":
-    main()
+    data = sys.argv[2]
+    result = sys.argv[3]
+    path_to_weights = sys.argv[1]
+    main(data, result, path_to_weights)
